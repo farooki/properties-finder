@@ -1,0 +1,2 @@
+class MasterLookup < ApplicationRecord
+end
