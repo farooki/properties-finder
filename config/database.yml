@@ -1,0 +1,37 @@
+
+development:
+  adapter: postgresql
+  host: 127.0.0.1
+  database: toby_properties_dev
+  username: db_super_user_psql
+  password: rG4jJ3R_hnpJw
+  encoding: unicode
+  pool: 5
+
+test:
+  adapter: postgresql
+  host: 127.0.0.1
+  database: toby_properties_dev
+  username: db_super_user_psql
+  password: rG4jJ3R_hnpJw
+  encoding: unicode
+  pool: 5
+
+production:
+  adapter: postgresql
+  host: 127.0.0.1
+  database: toby_properties_prod
+  username: db_super_user_psql
+  password: rG4jJ3R_hnpJw
+  encoding: unicode
+  pool: 5
+
+
+  # 1 - createuser --pwprompt db_super_user_psql
+  # ===================== IF USER IS NOT AVAILABLE ERROR THEN GO TO PG USER ====================
+  # sudo -u _postgres -i
+  #=============================================================================================
+  # 2 - psql postgres
+  # 3 - ALTER USER db_super_user_psql WITH SUPERUSER;
+  #========================FOR PASSWORD UPDATE ===============
+  # ALTER USER db_super_user_psql WITH PASSWORD 'rG4jJ3R_hnpJw';
