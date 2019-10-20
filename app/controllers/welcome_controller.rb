@@ -8,7 +8,7 @@ class WelcomeController < ApplicationController
     @is_search_string_present = params[:search].present?
     @location =  params[:search]
     if params[:search].present?
-      location = params[:search].split('--').first.strip
+      location = params[:search].split('--').first.strip.downcase
       radius = params[:search].split('--').last.strip.to_f
       if location.present?
         available_locations = Location.where("displayname LIKE ?", "%#{location}%")
@@ -56,7 +56,7 @@ class WelcomeController < ApplicationController
           new_fields << {
               :created_at => Time.now,
               :updated_at => Time.now,
-              :displayname => ir['displayName'],
+              :displayname => ir['displayName'].downcase,
               :locationidentifier => ir['locationIdentifier'],
               :normalisedsearchierm => ir['normalisedSearchTerm']
           }
