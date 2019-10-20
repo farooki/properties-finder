@@ -5,10 +5,27 @@
     <div class="col-sm-4">
       <form>
         <div class="form-group">
-          <input type="text" class="form-control" name="search" style="height: 50px;font-size: 23px;color: #39779c" placeholder="NW3 5TY or Waterloo Station">
+          <input type="text" list="locations" id="search_property_00" class="form-control" name="search" style="height: 50px;font-size: 23px;color: #39779c" placeholder="NW3 5TY or Waterloo Station">
+          <datalist id="locations">
+          </datalist>
         </div>
       </form>
     </div>
     <div class="col-sm-4"></div>
   </div>
 </center>
+
+
+<script>
+    $('#search_property_00').on('input',function(e){
+        var keyword = $('#search_property_00').val();
+        $("#locations").empty();
+        $.get('/location_suggester?location=' + keyword)
+            .done(function(response) {
+                for(var i = 0; i < response.length; i++){
+                    console.log(response[i]);
+                    $("#locations").append('<option value="'+ response[i] +'"></option>');
+                }
+            });
+    });
+</script>

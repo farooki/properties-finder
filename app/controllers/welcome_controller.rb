@@ -9,8 +9,8 @@ class WelcomeController < ApplicationController
   def location_suggester
     base_url = "https://www.rightmove.co.uk/typeAhead/uknostreet/"
     sub_url = ''
-    params[:location].strip.upcase.chars.each_slice(2) do |loc|
-      sub_url += loc.join('') + '/'
+    params[:location].upcase.chars.each_slice(2) do |loc|
+      sub_url += loc.map{|l| l.gsub(' ', '%20')}.join('') + '/'
     end
     api_url = base_url + sub_url
     response = []
