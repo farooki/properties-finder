@@ -28,7 +28,42 @@
     Total <b><%= @available_properties.count %></b> results found.
     <% if @available_properties.count == 0 %>
       ( <span style="color: green">Your request has been queued. Please check in few minutes</span> )
-    <% end %>
+    <% else %>
+    <br><br>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col"></th>
+        <th scope="col">Title & Description</th>
+        <th scope="col">Price</th>
+        <th scope="col">Source</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @available_properties.each_with_index do |prop, idx| %>
+        <tr>
+          <th scope="row"><%= idx+1 %></th>
+          <td>
+            <a href="<%= prop.images.first %>" target="_blank" >
+              <img src="<%= prop.images.first %>" height="25">
+            </a>
+          </td>
+          <td>
+            <a href="<%= prop.source_url %>" target="_blank" style="text-decoration: none;">
+              <b><%= prop.name %></b>
+              <p>
+                <%= prop.description %>
+              </p>
+            </a>
+          </td>
+          <td>£<%= prop.price %></td>
+          <td><%= prop.source %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+      <% end %>
   </div>
 <% end %>
 

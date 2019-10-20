@@ -23,7 +23,8 @@ class Property < ApplicationRecord
         source_url = 'https://www.rightmove.co.uk' + source_url
         properties_data << {
             images: property_images,
-            name: property.css('.propertyCard-link').text.strip.tr("\n",""),
+            name: property.css('h2').first.text.strip,
+            description: property.css('.propertyCard-link').text.strip.tr("\n",""),
             price: property_price,
             source: 'Rightmove',
             source_url: source_url,

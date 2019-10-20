@@ -30,7 +30,7 @@ class WelcomeController < ApplicationController
             Property.perform_async(pq.id)
           end
         else
-          @available_properties = available_properties
+          @available_properties = Property.where(:id => available_properties.uniq)
         end
       end
     end
