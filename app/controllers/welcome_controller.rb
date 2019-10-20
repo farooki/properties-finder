@@ -26,10 +26,11 @@ class WelcomeController < ApplicationController
         available_properties = LocationsProperty.find_by_sql(properties_sql).pluck(:property_id)
         if available_properties.empty?
           available_locations.map(&:id).each do |location_id|
-            PropertyQueue.find_or_create_by(location_id: location_id, radius: radius)
+            pq = PropertyQueue.find_or_create_by(location_id: location_id, radius: radius)
+            Property.perform_async(pq.id)
           end
         else
-
+          @available_properties = available_properties
         end
       end
     end
@@ -61,6 +62,10 @@ class WelcomeController < ApplicationController
           }
         end
         Location.insert_all(new_fields)
+        Location.where(:displayname => new_fields.map{|nf| nf[:displayname]}).each do |loc|
+          pq = PropertyQueue.find_or_create_by(location_id: loc.id, radius: 0.0)
+          Property.perform_async(pq.id)
+        end
       end
     rescue
     end
