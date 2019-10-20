@@ -5,7 +5,14 @@
     <div class="col-sm-4">
       <form>
         <div class="form-group">
-          <input type="text" list="locations" id="search_property_00" class="form-control" name="search" style="height: 50px;font-size: 23px;color: #39779c" placeholder="NW3 5TY or Waterloo Station">
+          <% if @location %>
+            <input type="text" list="locations" id="search_property_00" class="form-control" name="search" style="height: 50px;font-size: 23px;color: #39779c"
+                   placeholder="NW3 5TY or Waterloo Station" value="<%= @location %>">
+            <% else %>
+            <input type="text" list="locations" id="search_property_00" class="form-control" name="search" style="height: 50px;font-size: 23px;color: #39779c"
+                   placeholder="NW3 5TY or Waterloo Station">
+            <% end %>
+
           <datalist id="locations">
           </datalist>
         </div>
@@ -14,6 +21,16 @@
     <div class="col-sm-4"></div>
   </div>
 </center>
+
+<% if @is_search_string_present %>
+  <div class="container">
+    <hr>
+    Total <b><%= @available_properties.count %></b> results found.
+    <% if @available_properties.count == 0 %>
+      ( <span style="color: green">Your request has been queued. Please check in few minutes</span> )
+    <% end %>
+  </div>
+<% end %>
 
 
 <script>

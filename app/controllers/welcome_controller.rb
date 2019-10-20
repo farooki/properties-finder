@@ -4,6 +4,35 @@ require 'net/http'
 
 class WelcomeController < ApplicationController
   def index
+    @available_properties = []
+    @is_search_string_present = params[:search].present?
+    @location =  params[:search]
+    if params[:search].present?
+      location = params[:search].split('--').first.strip
+      radius = params[:search].split('--').last.strip.to_f
+      if location.present?
+        available_locations = Location.where("displayname LIKE ?", "%#{location}%")
+        if available_locations.empty?
+          available_locations = [Location.create(:displayname => location)]
+        end
+
+        properties_sql = "SELECT property_id from #{LocationsProperty.table_name}
+                              WHERE location_id IN (#{available_locations.map(&:id).join(',')})
+                                  AND is_active = true"
+        unless radius == 0.0
+          properties_sql += " AND radius <= #{radius}"
+        end
+
+        available_properties = LocationsProperty.find_by_sql(properties_sql).pluck(:property_id)
+        if available_properties.empty?
+          available_locations.map(&:id).each do |location_id|
+            PropertyQueue.find_or_create_by(location_id: location_id, radius: radius)
+          end
+        else
+
+        end
+      end
+    end
   end
 
   def location_suggester
@@ -21,11 +50,17 @@ class WelcomeController < ApplicationController
       response = data['typeAheadLocations'].map{|loc| loc['displayName']}
       Thread.new do
         insert_able_data = data['typeAheadLocations'].map{|f| f.slice('displayName', 'locationIdentifier', 'normalisedSearchTerm')}
+        new_fields = []
         insert_able_data.each do |ir|
-          ir['created_at'] = Time.now
-          ir['updated_at'] = Time.now
+          new_fields << {
+              :created_at => Time.now,
+              :updated_at => Time.now,
+              :displayname => ir['displayName'],
+              :locationidentifier => ir['locationIdentifier'],
+              :normalisedsearchierm => ir['normalisedSearchTerm']
+          }
         end
-        Location.insert_all(insert_able_data)
+        Location.insert_all(new_fields)
       end
     rescue
     end

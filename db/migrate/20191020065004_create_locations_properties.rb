@@ -4,7 +4,7 @@ class CreateLocationsProperties < ActiveRecord::Migration[6.0]
       t.references :location, null: false, foreign_key: true
       t.references :property, null: false, foreign_key: true
       t.float :radius
-      t.boolean :is_active
+      t.boolean :is_active, default: true
 
       t.timestamps
     end

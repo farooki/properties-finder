@@ -1,0 +1,2 @@
+class PropertyQueue < ApplicationRecord
+end
