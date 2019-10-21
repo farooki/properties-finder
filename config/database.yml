@@ -6,7 +6,7 @@ development:
   username: db_super_user_psql
   password: rG4jJ3R_hnpJw
   encoding: unicode
-  pool: 5
+  pool: 50
 
 test:
   adapter: postgresql
@@ -15,7 +15,7 @@ test:
   username: db_super_user_psql
   password: rG4jJ3R_hnpJw
   encoding: unicode
-  pool: 5
+  pool: 50
 
 production:
   adapter: postgresql
@@ -24,7 +24,9 @@ production:
   username: db_super_user_psql
   password: rG4jJ3R_hnpJw
   encoding: unicode
-  pool: 5
+  pool: 50
+
+
 
 
   # 1 - createuser --pwprompt db_super_user_psql
